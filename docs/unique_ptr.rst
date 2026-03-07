@@ -1,173 +1,189 @@
 ``std::unique_ptr``
 ===================
 
-.. version-added:: C++11
+#. .. cpp:class:: template<class T, class Deleter = std::default_delete<T>> unique_ptr
+#. .. cpp:class:: template<class T[], class Deleter> unique_ptr
 
-Defined in header `\<memory\> <header/memory.md>`_
+Defined in header :doc:`\<memory\>`.
 
-.. code-block::
+.. .. code-block::
 
-  template<class T, class Deleter = std::default_delete<T>>      // (1)
-  class unique_ptr;
+..   template<class T, class Deleter = std::default_delete<T>>      // (1)
+..   class unique_ptr;
 
-  template <class T, class Deleter>                              // (2)
-  class unique_ptr<T[], Deleter>;
+..   template <class T, class Deleter>                              // (2)
+..   class unique_ptr<T[], Deleter>;
 
-``std::unique_ptr`` is a smart pointer that owns (is responsible for) and manages another object via a pointer and subsequently disposes of that object when the ``unique_ptr`` goes out of scope.
+:cpp:class:`std::unique_ptr <unique_ptr>` is a smart pointer that owns (is responsible for) and manages another object via a pointer and subsequently disposes of that object when the :cpp:class:`unique_ptr` goes out of scope.
 
 The object is disposed of, using the associated deleter, when either of the following happens:
 
-* the managing unique_ptr object is destroyed.
-* the managing unique_ptr object is assigned another pointer via operator= or reset().
+* the managing :cpp:class:`unique_ptr` object is destroyed.
+* the managing :cpp:class:`unique_ptr` object is assigned another pointer via :cpp:func:`operator=` or :cpp:func:`reset`.
 
-The object is disposed of, using a potentially user-supplied deleter, by calling ``get_deleter()(ptr)``.
-The default deleter (``std::default_delete``) uses the delete operator, which destroys the object and deallocates the memory.
+The object is disposed of, using a potentially user-supplied deleter, by calling :cpp:func:`get_deleter`.
+The default deleter (:cpp:class:`std::default_delete`) uses the ``delete`` operator, which destroys the object and deallocates the memory.
 
-A ``unique_ptr`` may alternatively own no object, in which case it is described as empty.
+A :cpp:class:`unique_ptr` may alternatively own no object, in which case it is described as empty.
 
-There are two versions of ``unique_ptr``:
+There are two versions of :cpp:class:`unique_ptr`:
 
 #. Manages a single object (e.g., allocated with ``new``).
 #. Manages a dynamically-allocated array of objects (e.g., allocated with ``new[]``).
 
-The class satisfies the requirements of `*MoveConstructible* <>`_ and `*MoveAssignable* <>`_, but of neither `*CopyConstructible* <>`_ nor `*CopyAssignable* <>`_.
+The class satisfies the requirements of :doc:`MoveConstructible` and :doc:`MoveAssignable`, but of neither :doc:`CopyConstructible` nor :doc:`CopyAssignable`.
 
-If ``T*`` was not a valid type (e.g., ``T`` is a reference type), a program that instantiates the definition of ``std::unique_ptr<T, Deleter>`` is ill-formed.
+If ``T*`` is not a valid type (e.g., ``T`` is a reference type), a program that instantiates the definition of ``std::unique_ptr<T, Deleter>`` is ill-formed.
 
 Type requirements
 -----------------
 
-- Deleter must be `*FunctionObject* <>`_ or lvalue reference to a `*FunctionObject* <>`_ or lvalue reference to function, callable with an argument of type ``unique_ptr<T, Deleter>::pointer``.
+- ``Deleter`` must be :doc:`FunctionObject` or lvalue reference to a :doc:`FunctionObject` or lvalue reference to function, callable with an argument of type ``unique_ptr<T, Deleter>::pointer``.
 
 Notes
 -----
 
-Only non-const ``unique_ptr`` can transfer the ownership of the managed object to another ``unique_ptr``.
-If an object's lifetime is managed by a ``const std::unique_ptr``, it is limited to the scope in which the pointer was created.
+Only non-const :cpp:class:`unique_ptr` can transfer the ownership of the managed object to another :cpp:class:`unique_ptr`.
+If an object's lifetime is managed by a :cpp:class:`const unique_ptr <unique_ptr>`, it is limited to the scope in which the pointer was created.
 
-``unique_ptr`` is commonly used to manage the lifetime of objects, including:
+:cpp:class:`unique_ptr` is commonly used to manage the lifetime of objects, including:
 
 * providing exception safety to classes and functions that handle objects with dynamic lifetime, by guaranteeing deletion on both normal exit and exit through exception.
 * passing ownership of uniquely-owned objects with dynamic lifetime into functions.
 * acquiring ownership of uniquely-owned objects with dynamic lifetime from functions.
-* as the element type in move-aware containers, such as `std::vector <>`_, which hold pointers to dynamically-allocated objects (e.g. if polymorphic behavior is desired).
+* as the element type in move-aware containers, such as :cpp:class:`std::vector <vector>`, which hold pointers to dynamically-allocated objects (e.g. if polymorphic behavior is desired).
 
-unique_ptr may be constructed for an `incomplete type <>`_ T, such as to facilitate the use as a handle in the `pImpl idiom <>`_.
-If the default deleter is used, T must be complete at the point in code where the deleter is invoked, which happens in the destructor, move assignment operator, and reset member function of unique_ptr.
-(In contrast, `std::shared_ptr <>`_ cannot be constructed from a raw pointer to incomplete type, but can be destroyed where T is incomplete).
-Note that if T is a class template specialization, use of unique_ptr as an operand, e.g. ``!p`` requires T's parameters to be complete due to `ADL <>`_.
+:cpp:class:`unique_ptr` may be constructed for an incomplete type ``T``, such as to facilitate the use as a handle in the pImpl idiom.
+If the default deleter is used, ``T`` must be complete at the point in code where the deleter is invoked, which happens in the destructor, move assignment operator, and reset member function of unique_ptr.
+(In contrast, :cpp:class:`std::shared_ptr <shared_ptr>` cannot be constructed from a raw pointer to incomplete type, but can be destroyed where ``T`` is incomplete).
+Note that if ``T`` is a class template specialization, use of :cpp:class:`unique_ptr` as an operand, e.g. ``!p`` requires ``T``'s parameters to be complete due to ADL.
 
-If T is a `derived class <>`_ of some base B, then unique_ptr\<T\> is `implicitly convertible <>`_ to unique_ptr\<B\>.
-The default deleter of the resulting unique_ptr\<B\> will use `operator delete <>`_ for B, leading to `undefined behavior <>`_ unless the destructor of B is `virtual <>`_.
-Note that `std::shared_ptr <>`_ behaves differently: `std::shared_ptr\<B\> <>`_ will use the `operator delete <>`_ for the type T and the owned object will be deleted correctly even if the destructor of B is not `virtual <>`_.
+If ``T`` is a derived class of some base ``B``, then :cpp:class:`unique_ptr\<T\> <unique_ptr>` is implicitly convertible to :cpp:class:`unique_ptr\<B\> <unique_ptr>`.
+The default deleter of the resulting :cpp:class:`unique_ptr\<B\> <unique_ptr>` will use operator delete for ``B``, leading to undefined behavior unless the destructor of ``B`` is virtual.
+Note that :cpp:class:`std::shared_ptr <shared_ptr>` behaves differently: :cpp:class:`std::shared_ptr\<B\> <shared_ptr>` will use the operator delete for the type ``T`` and the owned object will be deleted correctly even if the destructor of ``B`` is not virtual.
 
-Unlike `std::shared_ptr <>`_, unique_ptr may manage an object through any custom handle type that satisfies `*NullablePointer* <>`_.
-This allows, for example, managing objects located in shared memory, by supplying a Deleter that defines ``typedef boost::offset_ptr pointer;`` or another `fancy pointer <>`_.
+Unlike :cpp:class:`std::shared_ptr <shared_ptr>`, :cpp:class:`unique_ptr` may manage an object through any custom handle type that satisfies :doc:`NullablePointer`.
+This allows, for example, managing objects located in shared memory, by supplying a Deleter that defines ``typedef boost::offset_ptr pointer;`` or another fancy pointer.
 
 .. csv-table::
-  :header: "`Feature-test <>`_ macro", "Value", "Std", "Feature"
+  :header: "Feature-test macro", "Value", "Std", "Feature"
 
-  "`\_\_cpp_lib_constexpr_memory <>`_", `202202L <>`_", "C++23", "``constexpr std::unique_ptr``"
+  :cpp:var:`\_\_cpp_lib_constexpr_memory`, ``202202L``, C++23, :cpp:class:`constexpr std::unique_ptr <unique_ptr>`
 
 Nested types
 ------------
 
-================ ===============================================================================================================================
+================ ========================================================================================================================
 Type             Definition
-================ ===============================================================================================================================
-``pointer``      `std::remove_reference<Deleter>::type::pointer <>`_ if that type exists, otherwise ``T*``. Must satisfy `*NullablePointer* <>`_
-``element_type`` ``T``, the type of the object managed by this ``unique_ptr``
+================ ========================================================================================================================
+``pointer``      :cpp:class:`std::remove_reference<Deleter>::type::pointer` if that type exists, otherwise ``T*``. Must satisfy :doc:`NullablePointer`
+``element_type`` ``T``, the type of the object managed by this :cpp:class:`unique_ptr`
 ``deleter_type`` ``Deleter``, the function object or lvalue reference to function or to function object, to be called from the destructor
-================ ===============================================================================================================================
+================ ========================================================================================================================
 
 Member functions
 ----------------
 
 .. list-table::
 
-  * - `(constructor) <>`_
-    - constructs a new ``unique_ptr``</br>(public member function)
-  * - `(destructor) <>`_
-    - destructs the managed object if such is present</br>(public member function)
-  * - ``operator=``
-    - assigns the ``unique_ptr``</br>(public member function)
+  * - :cpp:func:`(constructor) <constructor>`
+    - | constructs a new :cpp:class:`unique_ptr`
+      | (public member function)
+  * - :cpp:func:`(destructor) <destructor>`
+    - | destructs the managed object if such is present
+      | (public member function)
+  * - :cpp:func:`operator=`
+    - | assigns the :cpp:class:`unique_ptr`
+      | (public member function)
 
 Modifiers
 ^^^^^^^^^
 
 .. list-table::
 
-  * - ``release``
-    - returns a pointer to the managed object and releases the ownership</br>(public member function)
-  * - ``reset``
-    - replaces the managed object</br>(public member function)
-  * - ``swap``
-    - swaps the managed objects</br>(public member function)
+  * - :cpp:func:`release`
+    - | returns a pointer to the managed object and releases the ownership
+      | (public member function)
+  * - :cpp:func:`reset`
+    - | replaces the managed object
+      | (public member function)
+  * - :cpp:func:`swap`
+    - | swaps the managed objects
+      | (public member function)
 
 Observers
 ^^^^^^^^^
 
 .. list-table::
 
-  * - ``get``
-    - returns a pointer to the managed object</br>(public member function)
-  * - ``get_deleter``
-    - returns the deleter that is used for destruction of the managed object</br>(public member function)
-  * - ``operator bool``
-    - checks if there is an associated managed object</br>(public member function)
+  * - :cpp:func:`get`
+    - | returns a pointer to the managed object
+      | (public member function)
+  * - :cpp:func:`get_deleter`
+    - | returns the deleter that is used for destruction of the managed object
+      | (public member function)
+  * - :cpp:func:`operator bool`
+    - | checks if there is an associated managed object
+      | (public member function)
 
-Single-object version, ``unique_ptr<T>``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Single-object version, :cpp:class:`unique_ptr<T>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. list-table::
 
-  * - ``operator*``
-      ``operator->``
-    - dereferences pointer to the managed object</br>(public member function)
+  * - | :cpp:func:`operator*`
+      | :cpp:func:`operator->`
+    - | dereferences pointer to the managed object
+      | (public member function)
 
 Array version, ``unique_ptr<T[]>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. list-table::
 
-  * - ``operator[]``
-    - provides indexed access to the managed array</br>(public member function)
+  * - | :cpp:func:`operator[]`
+    - | provides indexed access to the managed array
+      | (public member function)
 
 Non-member functions
 --------------------
 
 .. list-table::
 
-  * - ``make_unique`` (C++14)
-      ``make_unique_for_overwrite`` (C++20)
-    - creates a unique pointer that manages a new object</br>(function template)
-  * - ``operator==`` (removed in C++20)
-      ``operator!=``
-      ``operator<``
-      ``operator<=``
-      ``operator>``
-      ``operator>=``
-      ``operator<=>`` (C++20)
-    - compares to another ``unique_ptr`` or with ``nullptr``</br>(function template)
-  * - ``operator<<(std::unique_ptr)`` (C++20)
-    - outputs the value of the managed pointer to an output stream</br>(function template)
-  * - ``std::swap(std::unique_ptr)`` (C++11)
-    - specializes the ``std::swap`` algorithm
-      (function template)
+  * - | :cpp:func:`make_unique`
+      | :cpp:func:`make_unique_for_overwrite`
+    - | creates a unique pointer that manages a new object
+      | (function template)
+  * - | :cpp:func:`operator==`
+      | :cpp:func:`operator!=`
+      | :cpp:func:`operator<`
+      | :cpp:func:`operator<=`
+      | :cpp:func:`operator>`
+      | :cpp:func:`operator>=`
+      | :cpp:func:`operator\<=\>`
+    - | compares to another :cpp:class:`unique_ptr` or with ``nullptr``
+      | (function template)
+  * - :cpp:func:`operator\<\<(std::unique_ptr) <operator\<\<>`
+    - | outputs the value of the managed pointer to an output stream
+      | (function template)
+  * - :cpp:func:`std::swap(unique_ptr) <swap>`
+    - | specializes the ``std::swap`` algorithm
+      | (function template)
+
 
 Helper classes
 --------------
 
 .. list-table::
 
-  * - ``std::hash<std::unique_ptr>`` (C++11)
-    - hash support for ``std::unique_ptr``
-      (class template specialization)
+  * - :cpp:func:`std::hash<std::unique_ptr>` (C++11)
+    - | hash support for ``std::unique_ptr``
+      | (class template specialization)
 
 Example
 -------
 
-`Run this code <>`_
+`Run this code <https://godbolt.org>`_
 
 .. code-block::
 
@@ -303,53 +319,69 @@ Example
       } // destroys all the beers
   }
 
-Possible output:
+Possible output::
 
-``````text
-1) Unique ownership semantics demo
-D::D
-D::bar
-D::~D
+  1) Unique ownership semantics demo
+  D::D
+  D::bar
+  D::~D
 
-2) Runtime polymorphism demo
-D::D
-D::bar
-D::~D
+  1) Runtime polymorphism demo
+  D::D
+  D::bar
+  D::~D
 
-3) Custom deleter demo
-x
+  1) Custom deleter demo
+  x
 
-4) Custom lambda-expression deleter and exception safety demo
-D::D
-destroying from a custom deleter...
-D::~D
-Caught exception
+  1) Custom lambda-expression deleter and exception safety demo
+  D::D
+  destroying from a custom deleter...
+  D::~D
+  Caught exception
 
-5) Array form of unique_ptr demo
-D::D
-D::D
-D::D
-D::~D
-D::~D
-D::~D
+  1) Array form of unique_ptr demo
+  D::D
+  D::D
+  D::D
+  D::~D
+  D::~D
+  D::~D
 
-6) Linked list demo
-1,000,000 bottles of beer on the wall...
-``````
+  1) Linked list demo
+  1,000,000 bottles of beer on the wall...
 
-## Defect reports
+Defect reports
+--------------
 
 The following behavior-changing defect reports were applied retroactively to previously published C++ standards.
 
-|      DR      | Applied to |           Behavior as published           | Correct behavior |
-| :----------: | :--------: | :---------------------------------------: | :--------------: |
-| [LWG 4144]() |   C++11    | T\* was not required to form a valid type |     required     |
+.. list-table::
+  :header-rows: 1
 
-## See also
+  * - DR
+    - Applied to
+    - Behavior as published
+    - Correct behavior
+  * - `LWG 4144 <https://cplusplus.github.io/LWG/issue4144>`_
+    - C++11
+    - ``T*`` was not required to form a valid type
+    - required
 
-|                  |       |                                                                                                  |
-| :--------------- | :---: | :----------------------------------------------------------------------------------------------- |
-| [``shared_ptr``]() | C++11 | smart pointer with shared object ownership semantics</br>(class template)                        |
-| [``weak_ptr``]()   | C++11 | weak reference to an object managed by [``std::shared_ptr``]()</br>(class template)                |
-| [``indirect``]()   | C++26 | a wrapper containing dynamically-allocated object with value-like semantics</br>(class template) |
-| [``any``]()        | C++17 | objects that hold instances of any [_CopyConstructible_]() type</br>(class)                      |
+See also
+--------
+
+.. list-table::
+
+  * - :cpp:class:`shared_ptr`
+    - | smart pointer with shared object ownership semantics
+      | (class template)
+  * - :cpp:class:`weak_ptr`
+    - | weak reference to an object managed by ``std::shared_ptr``
+      | (class template)
+  * - :cpp:class:`indirect`
+    - | a wrapper containing dynamically-allocated object with value-like semantics
+      | (class template)
+  * - :cpp:class:`any`
+    - | objects that hold instances of any *CopyConstructible* type
+      | (class)

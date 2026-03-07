@@ -25,13 +25,14 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-# extensions = [
-#     "sphinx.ext.autodoc",
-#     "sphinx.ext.extlinks",
-#     "sphinx.ext.napoleon",
-#     "sphinx_copybutton",
-#     "sphinx_inline_tabs",
-# ]
+extensions = [
+    #     "sphinx.ext.autodoc",
+    #     "sphinx.ext.extlinks",
+    "sphinx.ext.intersphinx"
+    #     "sphinx.ext.napoleon",
+    #     "sphinx_copybutton",
+    #     "sphinx_inline_tabs",
+]
 
 templates_path = ["_templates"]
 exclude_patterns = []
@@ -39,6 +40,8 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
+html_static_path = ["_static"]
+html_css_files = ["css/custom.css"]
 html_theme = "furo"
 html_title = project
 html_theme_options = {
