@@ -1,0 +1,4 @@
+:orphan:
+
+MoveAssignable
+==============
