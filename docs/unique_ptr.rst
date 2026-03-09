@@ -1,5 +1,7 @@
 :orphan:
 
+.. role:: cpp-entity-type
+
 ``std::unique_ptr``
 ===================
 
@@ -86,76 +88,113 @@ Type             Definition
 Member functions
 ----------------
 
+.. .. rst-class:: member-list
+
+.. .. list-table::
+
+..   * - :cpp:func:`(constructor) <constructor>`
+..     - constructs a new :cpp:class:`unique_ptr` :cpp-entity-type:`(public member function)`
+..   * - :cpp:func:`(destructor) <destructor>`
+..     - destructs the managed object if such is present :cpp-entity-type:`(public member function)`
+..   * - :cpp:func:`operator=`
+..     - assigns the :cpp:class:`unique_ptr` :cpp-entity-type:`(public member function)`
+
+.. .. rst-class:: member-list
+
+.. .. list-table::
+
+..   * - :cpp:func:`(constructor) <constructor>`
+..     - :cpp-entity-type:`(public member function)`
+..     - constructs a new :cpp:class:`unique_ptr`
+..   * - :cpp:func:`(destructor) <destructor>`
+..     - :cpp-entity-type:`(public member function)`
+..     - destructs the managed object if such is present
+..   * - :cpp:func:`operator=`
+..     - :cpp-entity-type:`(public member function)`
+..     - assigns the :cpp:class:`unique_ptr`
+
+.. rst-class:: member-list
+
 .. list-table::
 
   * - :cpp:func:`(constructor) <constructor>`
-    - | constructs a new :cpp:class:`unique_ptr`
-      | (public member function)
+    - constructs a new :cpp:class:`unique_ptr`
+    - :cpp-entity-type:`(public member function)`
   * - :cpp:func:`(destructor) <destructor>`
-    - | destructs the managed object if such is present
-      | (public member function)
+    - destructs the managed object if such is present
+    - :cpp-entity-type:`(public member function)`
   * - :cpp:func:`operator=`
-    - | assigns the :cpp:class:`unique_ptr`
-      | (public member function)
+    - assigns the :cpp:class:`unique_ptr`
+    - :cpp-entity-type:`(public member function)`
 
 Modifiers
 ^^^^^^^^^
 
+.. rst-class:: member-list
+
 .. list-table::
 
   * - :cpp:func:`release`
-    - | returns a pointer to the managed object and releases the ownership
-      | (public member function)
+    - returns a pointer to the managed object and releases the ownership
+    - :cpp-entity-type:`(public member function)`
   * - :cpp:func:`reset`
-    - | replaces the managed object
-      | (public member function)
+    - replaces the managed object
+    - :cpp-entity-type:`(public member function)`
   * - :cpp:func:`swap`
-    - | swaps the managed objects
-      | (public member function)
+    - swaps the managed objects
+    - :cpp-entity-type:`(public member function)`
 
 Observers
 ^^^^^^^^^
 
+.. rst-class:: member-list
+
 .. list-table::
 
   * - :cpp:func:`get`
-    - | returns a pointer to the managed object
-      | (public member function)
+    - returns a pointer to the managed object
+    - :cpp-entity-type:`(public member function)`
   * - :cpp:func:`get_deleter`
-    - | returns the deleter that is used for destruction of the managed object
-      | (public member function)
+    - returns the deleter that is used for destruction of the managed object
+    - :cpp-entity-type:`(public member function)`
   * - :cpp:func:`operator bool`
-    - | checks if there is an associated managed object
-      | (public member function)
+    - checks if there is an associated managed object
+    - :cpp-entity-type:`(public member function)`
 
 Single-object version, :cpp:class:`unique_ptr<T>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. rst-class:: member-list
 
 .. list-table::
 
   * - | :cpp:func:`operator*`
       | :cpp:func:`operator->`
-    - | dereferences pointer to the managed object
-      | (public member function)
+    - dereferences pointer to the managed object
+    - :cpp-entity-type:`(public member function)`
 
 Array version, ``unique_ptr<T[]>``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. rst-class:: member-list
+
 .. list-table::
 
-  * - | :cpp:func:`operator[]`
-    - | provides indexed access to the managed array
-      | (public member function)
+  * - :cpp:func:`operator[]`
+    - provides indexed access to the managed array
+    - :cpp-entity-type:`(public member function)`
 
 Non-member functions
 --------------------
+
+.. rst-class:: member-list
 
 .. list-table::
 
   * - | :cpp:func:`make_unique`
       | :cpp:func:`make_unique_for_overwrite`
-    - | creates a unique pointer that manages a new object
-      | (function template)
+    - creates a unique pointer that manages a new object
+    - :cpp-entity-type:`(function template)`
   * - | :cpp:func:`operator==`
       | :cpp:func:`operator!=`
       | :cpp:func:`operator<`
@@ -163,29 +202,31 @@ Non-member functions
       | :cpp:func:`operator>`
       | :cpp:func:`operator>=`
       | :cpp:func:`operator\<=\>`
-    - | compares to another :cpp:class:`unique_ptr` or with ``nullptr``
-      | (function template)
+    - compares to another :cpp:class:`unique_ptr` or with ``nullptr``
+    - :cpp-entity-type:`(function template)`
   * - :cpp:func:`operator\<\<(std::unique_ptr) <operator\<\<>`
-    - | outputs the value of the managed pointer to an output stream
-      | (function template)
+    - outputs the value of the managed pointer to an output stream
+    - :cpp-entity-type:`(function template)`
   * - :cpp:func:`std::swap(unique_ptr) <swap>`
-    - | specializes the ``std::swap`` algorithm
-      | (function template)
+    - specializes the ``std::swap`` algorithm
+    - :cpp-entity-type:`(function template)`
 
 
 Helper classes
 --------------
 
+.. rst-class:: member-list
+
 .. list-table::
 
-  * - :cpp:func:`std::hash<std::unique_ptr>` (C++11)
-    - | hash support for ``std::unique_ptr``
-      | (class template specialization)
+  * - :cpp:func:`std::hash<std::unique_ptr>` :cpp-entity-type:`(C++11)`
+    - hash support for ``std::unique_ptr``
+    - :cpp-entity-type:`(class template specialization)`
 
 Example
 -------
 
-`Run this code <https://godbolt.org>`_
+`Run this code in Compiler Explorer <https://godbolt.org/z/G4q16b1MK>`_
 
 .. code-block::
 
@@ -373,17 +414,19 @@ The following behavior-changing defect reports were applied retroactively to pre
 See also
 --------
 
+.. rst-class:: member-list
+
 .. list-table::
 
   * - :cpp:class:`shared_ptr`
-    - | smart pointer with shared object ownership semantics
-      | (class template)
+    - smart pointer with shared object ownership semantics
+    - :cpp-entity-type:`(class template)`
   * - :cpp:class:`weak_ptr`
-    - | weak reference to an object managed by ``std::shared_ptr``
-      | (class template)
+    - weak reference to an object managed by ``std::shared_ptr``
+    - :cpp-entity-type:`(class template)`
   * - :cpp:class:`indirect`
-    - | a wrapper containing dynamically-allocated object with value-like semantics
-      | (class template)
+    - a wrapper containing dynamically-allocated object with value-like semantics
+    - :cpp-entity-type:`(class template)`
   * - :cpp:class:`any`
-    - | objects that hold instances of any *CopyConstructible* type
-      | (class)
+    - objects that hold instances of any *CopyConstructible* type
+    - :cpp-entity-type:`(class)`

@@ -1,3 +1,17 @@
 tr {
   vertical-align: top;
 }
+
+table.docutils td {
+  border: none;
+}
+
+.member-list table {
+  margin-left: 0;
+  /* margin-right: 2em; */
+}
+
+.cpp-entity-type {
+  color: green;
+  font-size: small;
+}
