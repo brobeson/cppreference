@@ -5,7 +5,7 @@ build:
   tools:
     python: "3.12"
 sphinx:
-  configuration: docs/conf.py
+  configuration: source/conf.py
   fail_on_warning: true
 python:
   install:

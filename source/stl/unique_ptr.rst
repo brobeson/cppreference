@@ -8,7 +8,7 @@
 #. .. cpp:class:: template<class T, class Deleter = std::default_delete<T>> unique_ptr
 #. .. cpp:class:: template<class T[], class Deleter> unique_ptr
 
-Defined in header :doc:`headers/memory`
+Defined in header :doc:`/headers/memory`
 
 .. .. code-block::
 
@@ -35,14 +35,14 @@ There are two versions of :cpp:class:`unique_ptr`:
 #. Manages a single object (e.g., allocated with ``new``).
 #. Manages a dynamically-allocated array of objects (e.g., allocated with ``new[]``).
 
-The class satisfies the requirements of :doc:`move_constructible` and :doc:`move_assignable`, but of neither :doc:`copy_constructible` nor :doc:`copy_assignable`.
+The class satisfies the requirements of :doc:`/named_requirements/move_constructible` and :doc:`/named_requirements/move_assignable`, but of neither :doc:`/named_requirements/copy_constructible` nor :doc:`/named_requirements/copy_assignable`.
 
 If ``T*`` is not a valid type (e.g., ``T`` is a reference type), a program that instantiates the definition of ``std::unique_ptr<T, Deleter>`` is ill-formed.
 
 Type requirements
 -----------------
 
-- ``Deleter`` must be :doc:`function_object` or lvalue reference to a :doc:`function_object` or lvalue reference to function, callable with an argument of type ``unique_ptr<T, Deleter>::pointer``.
+- ``Deleter`` must be :doc:`/named_requirements/function_object` or lvalue reference to a :doc:`/named_requirements/function_object` or lvalue reference to function, callable with an argument of type ``unique_ptr<T, Deleter>::pointer``.
 
 Notes
 -----
@@ -66,7 +66,7 @@ If ``T`` is a derived class of some base ``B``, then :cpp:class:`unique_ptr\<T\>
 The default deleter of the resulting :cpp:class:`unique_ptr\<B\> <unique_ptr>` will use operator delete for ``B``, leading to undefined behavior unless the destructor of ``B`` is virtual.
 Note that :cpp:class:`std::shared_ptr <shared_ptr>` behaves differently: :cpp:class:`std::shared_ptr\<B\> <shared_ptr>` will use the operator delete for the type ``T`` and the owned object will be deleted correctly even if the destructor of ``B`` is not virtual.
 
-Unlike :cpp:class:`std::shared_ptr <shared_ptr>`, :cpp:class:`unique_ptr` may manage an object through any custom handle type that satisfies :doc:`nullable_pointer`.
+Unlike :cpp:class:`std::shared_ptr <shared_ptr>`, :cpp:class:`unique_ptr` may manage an object through any custom handle type that satisfies :doc:`/named_requirements/nullable_pointer`.
 This allows, for example, managing objects located in shared memory, by supplying a Deleter that defines ``typedef boost::offset_ptr pointer;`` or another fancy pointer.
 
 .. csv-table::
@@ -80,7 +80,7 @@ Nested types
 ================ ========================================================================================================================
 Type             Definition
 ================ ========================================================================================================================
-``pointer``      :cpp:class:`std::remove_reference<Deleter>::type::pointer` if that type exists, otherwise ``T*``. Must satisfy :doc:`nullable_pointer`
+``pointer``      :cpp:class:`std::remove_reference<Deleter>::type::pointer` if that type exists, otherwise ``T*``. Must satisfy :doc:`/named_requirements/nullable_pointer`
 ``element_type`` ``T``, the type of the object managed by this :cpp:class:`unique_ptr`
 ``deleter_type`` ``Deleter``, the function object or lvalue reference to function or to function object, to be called from the destructor
 ================ ========================================================================================================================

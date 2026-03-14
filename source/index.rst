@@ -9,4 +9,4 @@
    :caption: STL
    :hidden:
 
-   memory
+   stl/memory
